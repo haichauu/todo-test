@@ -10,7 +10,8 @@
 
 ## Steps:
 1. Just clone and run so run command: git clone https://github.com/haichauu/todo-test.git
-2. From todo-test folder, run: docker-compose up --build -d
+2. Check out master branch
+3. From todo-test folder, run: docker-compose up --build -d
 
 ## Information:
 -  Go to url web app with simple UI, http://localhost:3001
