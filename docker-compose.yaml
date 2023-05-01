@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: todo-db
+    restart: always
+    environment:
+      - MYSQL_DATABASE=task_management
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./mysql-init-files:/docker-entrypoint-initdb.d
+    ports:
+      - '33061:3306'
+  api:
+    container_name: todo-api
+    depends_on:
+      - db
+    build:
+      dockerfile: Dockerfile
+      context: ./todo-app-api
+      # Only will build development stage from our dockerfile
+      target: development
+    volumes:
+      - ./todo-app-api:/var/www
+    env_file:
+      - .env
+    # Run a command against the development stage of the image
+    command: npm run start:dev
+    ports:
+      - 3000:3000
+  todo-app:
+    container_name: todo-app-web
+    depends_on:
+     - api
+    build:
+      context: ./todo-app
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - 3001:3001
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./todo-app:/app
+      - /app/node_modules
