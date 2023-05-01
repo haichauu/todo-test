@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
 export class RegisterUserByEmailDto {
   @IsNotEmpty()
@@ -6,8 +6,10 @@ export class RegisterUserByEmailDto {
   email: string;
 
   @IsNotEmpty()
-  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  // @Matches(/^(?=.*[A-Z])(?=.*[!@#$&])(?=.*[0-9])(?=.*[a-z]).{12}$/, {
   //   message: 'password too weak',
   // })
+  @MaxLength(20)
+  @MinLength(8)
   password: string;
 }

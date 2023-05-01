@@ -2,21 +2,40 @@ import { useForm } from "react-hook-form";
 import React, {ReactElement, FC} from "react";
 import {signUpApi} from "../api/requests";
 import {Link, useNavigate} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp: FC<any> = (): ReactElement => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const onSubmit = async ({email, password, confirmPassword}: any, e: any) => {
         if(password !== confirmPassword) {
-         return
+            toast.error('Passwords are not match', {
+                position: toast.POSITION.TOP_RIGHT
+            })
+            return
         }
-        const response: any  = await signUpApi(email, password)
-        navigate('/todo',{state:{token: response.access_token}});    }
+        try {
+            const response: any  = await signUpApi(email, password)
+            navigate('/todo',{state:{token: response.access_token}});
+        }
+        catch (e: any) {
+            let errMsg = e?.response?.data?.message || e.message
+            if(e?.response?.data?.errors) {
+                errMsg = Object.keys(e?.response?.data?.errors).map((key) => e?.response.data.errors[key]).join(',')
+            }
+            toast.error(errMsg, {
+                position: toast.POSITION.TOP_RIGHT
+            })
+        }
+
+    }
     const onError = (errors: any, e: any) => console.log(errors, e);
 
 
     return (
         <div className="Auth-form-container">
+            <ToastContainer />
             <form className="Auth-form" onSubmit={handleSubmit(onSubmit, onError)}>
                 <div className="Auth-form-content">
                     <h3 className="Auth-form-title">Sign Up</h3>

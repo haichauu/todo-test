@@ -2,18 +2,30 @@ import { useForm } from "react-hook-form";
 import React, {ReactElement, FC} from "react";
 import {signInApi} from "../api/requests";
 import {Link, useNavigate} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignIn: FC<any> = (): ReactElement => {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const onSubmit = async ({email, password}: any, e: any) => {
-        const response: any  = await signInApi(email, password)
-        navigate('/todo',{state:{token: response.access_token}});    }
-    const onError = (errors: any, e: any) => console.log(errors, e);
+        try {
+            const response: any  = await signInApi(email, password)
+            navigate('/todo',{state:{token: response.access_token}});
+        }catch (e: any) {
+            toast.error(e?.response?.data?.message || e.message, {
+                position: toast.POSITION.TOP_RIGHT
+            })
+        }
+           }
+    const onError = (errors: any, e: any) => toast.error(e.message, {
+        position: toast.POSITION.TOP_RIGHT
+    });
 
 
     return (
         <div className="Auth-form-container">
+            <ToastContainer />
             <form className="Auth-form" onSubmit={handleSubmit(onSubmit, onError)}>
                 <div className="Auth-form-content">
                     <h3 className="Auth-form-title">Sign In</h3>
