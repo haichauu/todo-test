@@ -3,7 +3,7 @@
 ## Structure:
 - mysql-init-files folder: contain init sql file
 - todo-app-api folder: source code nestjs for Backend
-- todo-app: source code reactjs for Fronend
+- todo-app: source code reactjs for Frontend
 
 ## Must have:
 - Need to install Docker and Docker Compose
