@@ -5,6 +5,11 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+
+// Services
+import { AuthService } from './auth.service';
+
+// Dtos
 import {
   ForgotPasswordDto,
   VerifyEmailDto,
@@ -12,8 +17,6 @@ import {
   LoginByEmailDto,
   RegisterUserByEmailDto,
 } from './dto';
-
-import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {

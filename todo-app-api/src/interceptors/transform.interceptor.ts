@@ -88,7 +88,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Result<T>> {
           log.response_content = JSON.stringify(err.response) || err.message;
         } catch (e) {
           myLogger.log({
-            level: 'info',
+            level: 'error',
             message: 'Can not stringify err.response',
           });
         }

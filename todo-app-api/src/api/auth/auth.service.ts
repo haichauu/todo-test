@@ -3,16 +3,28 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Verification, VerificationType } from '../../entities';
-import { FindOptionsWhere, MoreThan, Repository } from 'typeorm';
-import { VerifyEmailDto, VerifyForgotPasswordDto } from './dto';
-import { compareBcryptHash, createBcryptHash } from '../../helpers';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterUserByEmailDto, LoginByEmailDto } from './dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOptionsWhere, MoreThan, Repository } from 'typeorm';
+
+// Services
 import { MailService } from '../../mailgun/mailgun.service';
+import { UserService } from '../user/user.service';
+
+// Configs & Helpers
 import { feWebConfig } from '../../config';
+import { compareBcryptHash, createBcryptHash } from '../../helpers';
+
+// Dtos
+import {
+  RegisterUserByEmailDto,
+  LoginByEmailDto,
+  VerifyEmailDto,
+  VerifyForgotPasswordDto,
+} from './dto';
+
+// Models
+import { Verification, VerificationType } from '../../entities';
 
 @Injectable()
 export class AuthService {
@@ -94,7 +106,10 @@ export class AuthService {
   }
 
   async registerUserByEmail(dto: RegisterUserByEmailDto) {
-    const existedUser = await this.userService.findOne({ email: dto.email }, false);
+    const existedUser = await this.userService.findOne(
+      { email: dto.email },
+      false,
+    );
     if (existedUser) throw new BadRequestException('Email da ton tai');
     const user = await this.userService.create(dto);
     const verification = await this.verificationRepository

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindOptionsWhere, IsNull, Like, Repository } from 'typeorm';
-import { Todo } from '../../entities';
-import { CreateTodoDto, SearchTodosDto } from './dto';
 import { endOfDay, startOfDay } from 'date-fns';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Between, FindOptionsWhere, Like, Repository } from 'typeorm';
+import { CreateTodoDto, SearchTodosDto } from './dto';
+import { Todo } from '../../entities';
 
 @Injectable()
 export class TaskService {

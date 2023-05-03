@@ -12,9 +12,15 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { UserDecorator } from '../auth/decorators';
-import { User } from '../../entities';
-import { CreateTodoDto, SearchTodosDto } from './dto';
+
+// Services
 import { TaskService } from './task.service';
+
+// Dtos
+import { CreateTodoDto, SearchTodosDto } from './dto';
+
+// Models
+import { User } from '../../entities';
 
 @Controller('task')
 @UseGuards(AuthGuard)
